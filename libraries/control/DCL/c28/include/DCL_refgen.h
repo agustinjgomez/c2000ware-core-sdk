@@ -81,7 +81,8 @@ enum dcl_rgen_modes {
     REFGEN_TRIANGLE,
     REFGEN_PULSE,
     REFGEN_SINE2,
-    REFGEN_SINE3
+    REFGEN_SINE3,
+    REFGEN_SQUARE_BIPOLAR
 };
 
 //! \brief          Defines the DCL_REFGEN structure
@@ -457,6 +458,12 @@ static inline void DCL_runRefgen(DCL_REFGEN *p)
 
         case REFGEN_SQUARE:
             p->ya = (p->theta > 0.5f) ? 1.0f : 0.0f;
+            p->yb = 0.0f;
+            p->yc = 0.0f;
+            break;
+
+        case REFGEN_SQUARE_BIPOLAR:
+            p->ya = (p->theta > 0.5f) ? 1.0f : -1.0f;
             p->yb = 0.0f;
             p->yc = 0.0f;
             break;
