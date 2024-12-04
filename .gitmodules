@@ -1,0 +1,3 @@
+[submodule "c2000ware-FreeRTOS"]
+	path = c2000ware-FreeRTOS
+	url = git@github.com:agustinjgomez/c2000ware-FreeRTOS.git
