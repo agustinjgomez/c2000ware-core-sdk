@@ -68,7 +68,7 @@ extern "C" {
 
 //! \brief          Defines the minimum normalized increment
 //!
-#define DCL_REFGEN_MIN_INC      1.0e-06f
+#define DCL_REFGEN_MIN_INC      1.0e-08f
 
 //! \brief          Defines the REFGEN operating modes
 //!
