@@ -62,10 +62,10 @@ extern "C" {
 #include "DCL.h"
 
 //--- PIDF64 controller -----------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updatePIDF64,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPIDF64_S1,"dclfuncs")
-
+#endif // __cplusplus
 //! \brief          Defines the shadow PIDF64 controller structure
 //!
 typedef struct dcl_pidf64_sps {
@@ -128,6 +128,9 @@ static inline void DCL_resetPIDF64(DCL_PIDF64 *p)
 //! \param[in] p    Pointer to the DCL_PIDF64 controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updatePIDF64(DCL_PIDF64 *p)
 {
     uint16_t v;
@@ -218,6 +221,9 @@ static inline float64_t DCL_getPIDF64filterBW(DCL_PIDF64 *p)
 //! \param[in] lk   External output clamp flag
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float64_t DCL_runPIDF64_S1(DCL_PIDF64 *p, float64_t rk, float64_t yk, float64_t lk)
 {
     float64_t v1, v4, v5, v8, v9, v10, v12;
@@ -257,12 +263,13 @@ static inline float64_t DCL_runPIDF64_S1(DCL_PIDF64 *p, float64_t rk, float64_t 
 }
 
 //--- DF22F64 controller -----------------------------------------------------
+#ifndef __cplusplus
 
 #pragma CODE_SECTION(DCL_updateDF22F64,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF22F64_S1,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF22F64_S2,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF22F64_S3,"dclfuncs")
-
+#endif // __cplusplus
 //! \brief          Defines the DCL_DF22F64 shadow parameter set
 //!
 typedef struct dcl_df22f64_sps {
@@ -312,6 +319,9 @@ static inline void DCL_resetDF22F64(DCL_DF22F64 *p)
 //! \param[in] p    Pointer to the DCL_DF22F64 controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updateDF22F64(DCL_DF22F64 *p)
 {
     uint16_t v;
@@ -335,6 +345,9 @@ static inline void DCL_updateDF22F64(DCL_DF22F64 *p)
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float64_t DCL_runDF22F64_S1(DCL_DF22F64 *p, float64_t ek)
 {
     float64_t v7;
@@ -356,6 +369,9 @@ static inline float64_t DCL_runDF22F64_S1(DCL_DF22F64 *p, float64_t ek)
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float64_t DCL_runDF22F64_S2(DCL_DF22F64 *p, float64_t ek)
 {
     return((ek * p->b0) + p->x1);
@@ -367,6 +383,9 @@ static inline float64_t DCL_runDF22F64_S2(DCL_DF22F64 *p, float64_t ek)
 //! \param[in] ek   The servo error
 //! \param[in] uk   The controller output in the previous sample interval
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_runDF22F64_S3(DCL_DF22F64 *p, float64_t ek, float64_t uk)
 {
     p->x1 = (ek * p->b1) + p->x2 - (uk * p->a1);

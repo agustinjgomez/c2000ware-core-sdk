@@ -64,16 +64,18 @@ extern "C" {
 #endif
 
 #include "DCL.h"
+#ifndef __cplusplus
 #include <complex.h>
+#endif // __cplusplus
 #include <stdint.h>
 
 
 //--- Linear PID controller --------------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updatePID,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPID_C2,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPID_C4,"dclfuncs")
-
+#endif // __cplusplus
 //! \brief          Defines the DCL_PID shadow parameter set
 //!
 typedef struct dcl_pid_sps {
@@ -134,6 +136,9 @@ static inline void DCL_resetPID(DCL_PID *p)
 //! \param[in] p    Pointer to the active DCL_PID controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updatePID(DCL_PID *p)
 {
     uint16_t v;
@@ -234,7 +239,7 @@ static inline float32_t DCL_getPIDfilterBW(DCL_PID *p)
     float32_t tau = ((2.0f - p->c1 * p->css->T) / (2.0f * p->c1));
     return(1.0f / (2.0f * CONST_PI_32 * tau));
 }
-
+#ifndef __cplusplus
 //! \brief          Configures a series PID controller in ZPK form
 //!                 Note: parameters take effect after call to DCL_updatePID()
 //!                 Only z1, z2 & p2 considered.  p1 = 0 assumed.
@@ -349,7 +354,7 @@ static inline void DCL_loadParallelPIDasZPK(DCL_PID *p, DCL_ZPK3 *q)
 #endif
 
 }
-
+#endif // __cplusplus
 //! \brief          Executes an ideal form PID controller on the FPU32
 //!                 Implemented as an external assembly module
 //! \param[in] p    Pointer to the DCL_PID structure
@@ -367,6 +372,9 @@ extern float32_t DCL_runPID_C1(DCL_PID *p, float32_t rk, float32_t yk, float32_t
 //! \param[in] lk   External output clamp flag
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runPID_C2(DCL_PID *p, float32_t rk, float32_t yk, float32_t lk)
 {
     float32_t v1, v4, v5, v8, v9, v10, v12;
@@ -431,17 +439,20 @@ static inline float32_t DCL_runPID_C3(DCL_PID *p, float32_t rk, float32_t yk, fl
 //! \param[in] lk   External output clamp flag
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 extern float32_t DCL_runPID_C4(DCL_PID *p, float32_t rk, float32_t yk, float32_t lk);
 
 
 //--- Linear PI controller ---------------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updatePI,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPI_C2,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPI_C3,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPI_C5,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPI_C6,"dclfuncs")
-
+#endif // __cplusplus
 //! \brief          Defines the DCL_PI shadow parameter set
 //!
 typedef struct dcl_pi_sps {
@@ -497,6 +508,9 @@ static inline void DCL_resetPI(DCL_PI *p)
 //! \param[in] p    Pointer to the active DCL_PI controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updatePI(DCL_PI *p)
 {
     uint16_t v;
@@ -533,7 +547,7 @@ static inline void DCL_updatePI(DCL_PI *p)
 //! \return         None
 //!
 extern void DCL_fupdatePI(DCL_PI *p);
-
+#ifndef __cplusplus
 //! \brief          Configures a series PI controller in "zero-pole-gain" form
 //!                 Note: new settings take effect after DCL_updatePI()
 //!                 Only z1 considered in DCL_ZPK3, other poles & zeros ignored
@@ -585,7 +599,7 @@ static inline void DCL_loadParallelPIasZPK(DCL_PI *p, DCL_ZPK3 *q)
     p->sps->Kp = q->K * (1.0f + T * z1 / 2.0f);
     p->sps->Ki = -q->K * T * z1;
 }
-
+#endif //__cplusplus
 //! \brief          Executes a series form PI controller on the FPU32
 //!                 Implemented as an external assembly module
 //! \param[in] p    Pointer to the DCL_PI structure
@@ -601,6 +615,9 @@ extern float32_t DCL_runPI_C1(DCL_PI *p, float32_t rk, float32_t yk);
 //! \param[in] yk   The measured feedback value
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runPI_C2(DCL_PI *p, float32_t rk, float32_t yk)
 {
     float32_t v2, v4, v5, v9;
@@ -627,6 +644,9 @@ static inline float32_t DCL_runPI_C2(DCL_PI *p, float32_t rk, float32_t yk)
 //! \param[in] yk   The measured feedback value
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runPI_C3(DCL_PI *p, float32_t rk, float32_t yk)
 {
     float32_t v1, v2, v4, v5, v9;
@@ -663,6 +683,9 @@ extern float32_t DCL_runPI_C4(DCL_PI *p, float32_t rk, float32_t yk);
 //! \param[in] yk   The measured feedback value
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runPI_C5(DCL_PI *p, float32_t rk, float32_t yk)
 {
     float32_t v1, v5, v7, v8;
@@ -696,6 +719,9 @@ static inline float32_t DCL_runPI_C5(DCL_PI *p, float32_t rk, float32_t yk)
 //! \param[in] yk   The measured feedback value
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runPI_C6(DCL_PI *p, float32_t rk, float32_t yk)
 {
     float32_t v2, v4, v5, v8, v9;
@@ -728,10 +754,10 @@ extern float32_t DCL_runPI_C7(DCL_PI *p, float32_t rk, float32_t yk);
 
 
 //--- Linear PI2 controller --------------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updatePI2,"dclfuncs")
 #pragma CODE_SECTION(DCL_runPI2_C1,"dclfuncs")
-
+#endif // __cplusplus
 //! \brief          Defines the DCL_PI2 shadow parameter set
 //!
 typedef struct dcl_pi2_sps {
@@ -781,6 +807,9 @@ static inline void DCL_resetPI2(DCL_PI2 *p)
 //! \param[in] p    Pointer to the DCL_PI2 controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updatePI2(DCL_PI2 *p)
 {
     uint16_t v;
@@ -822,6 +851,9 @@ extern void DCL_fupdatePI2(DCL_PI2 *p);
 //! \param[in] yk   The measured feedback
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runPI2_C1(DCL_PI2 *p, float32_t rk, float32_t yk)
 {
     float32_t v1, v2, v5, v8, v10, v11, v14;
@@ -855,10 +887,10 @@ static inline float32_t DCL_runPI2_C1(DCL_PI2 *p, float32_t rk, float32_t yk)
 
 
 //--- Direct Form 1 - 1st order ----------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updateDF11,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF11_C2,"dclfuncs")
-
+#endif // __cplusplus
 //! \brief          Defines the DCL_DF11 shadow parameter set
 //!
 typedef struct dcl_df11_sps {
@@ -903,6 +935,9 @@ static inline void DCL_resetDF11(DCL_DF11 *p)
 //! \param[in] p    Pointer to the DCL_DF11 controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updateDF11(DCL_DF11 *p)
 {
     uint16_t v;
@@ -933,7 +968,7 @@ static inline bool DCL_isStableDF11(DCL_DF11 *p)
 {
     return(DCL_isStablePn1(p->sps->a1));
 }
-
+#ifndef __cplusplus
 //! \brief          Loads the DF11 shadow coefficients from a ZPK3 description
 //!                 Note: new settings take effect after DCL_updateDF11()
 //!                 Only real z1 & p1 considered: all other roots ignored
@@ -959,7 +994,7 @@ static inline void DCL_loadDF11asZPK(DCL_DF11 *p, DCL_ZPK3 *q)
     p->sps->b1 = q->K * (-2.0f - (float32_t) crealf(q->z1) * p->css->T) / a0p;
     p->sps->a1 = (-2.0f - (float32_t) crealf(q->p1) * p->css->T) / a0p;
 }
-
+#endif // __cplusplus
 //! \brief          Loads compensator coefficients to emulate series form PI
 //!                 Note: new settings take effect after DCL_updateDF11()
 //! \param[in] p    Pointer to the DCL_DF11 controller structure
@@ -999,6 +1034,9 @@ extern float32_t DCL_runDF11_C1(DCL_DF11 *p, float32_t ek);
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF11_C2(DCL_DF11 *p, float32_t ek)
 {
     p->d2 = (ek * p->b0) + (p->d1 * p->b1) - (p->d2 * p->a1);
@@ -1009,11 +1047,12 @@ static inline float32_t DCL_runDF11_C2(DCL_DF11 *p, float32_t ek)
 
 
 //--- Direct Form 1 - 3rd order ----------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updateDF13,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF13_C4,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF13_C5,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF13_C6,"dclfuncs")
+#endif // __cplusplus
 
 //! \brief          Defines the DCL_DF13 shadow parameter set
 //!
@@ -1081,6 +1120,9 @@ static inline void DCL_resetDF13(DCL_DF13 *p)
 //! \param[in] p    Pointer to the DCL_DF13 controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updateDF13(DCL_DF13 *p)
 {
     uint16_t v;
@@ -1116,7 +1158,7 @@ static inline bool DCL_isStableDF13(DCL_DF13 *p)
 {
     return(DCL_isStablePn3(1.0f, p->sps->a1, p->sps->a2, p->sps->a3));
 }
-
+#ifndef __cplusplus
 //! \brief          Loads the DF13 shadow coefficients from a ZPK3 description
 //!                 Note: new settings take effect after DCL_updateDF13()
 //! \param[in] p    Pointer to the DCL_DF13 controller structure
@@ -1157,7 +1199,7 @@ static inline void DCL_loadDF13asZPK(DCL_DF13 *p, DCL_ZPK3 *q)
     p->sps->a2 = (24.0f - (alpha2 * 4.0f * T) - (alpha1 * 2.0f * T * T) + (3.0f * alpha0 * T * T * T)) / a0p;
     p->sps->a3 = (-8.0f + (alpha2 * 4.0f * T) - (alpha1 * 2.0f * T * T) + (alpha0 * T * T * T)) / a0p;
 }
-
+#endif //__cplusplus
 //! \brief          Executes a full 3rd order Direct Form 1 controller on the FPU32
 //!                 Implemented as an external assembly module
 //! \param[in] p    Pointer to the DCL_DF13 controller structure
@@ -1191,6 +1233,9 @@ extern float32_t DCL_runDF13_C3(DCL_DF13 *p, float32_t ek, float32_t uk);
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF13_C4(DCL_DF13 *p, float32_t ek)
 {
     p->d4 = (ek * p->b0) + (p->d1 * p->b1) + (p->d2 * p->b2) + (p->d3 * p->b3) - (p->d5 * p->a1) - (p->d6 * p->a2) - (p->d7 * p->a3);
@@ -1211,6 +1256,9 @@ static inline float32_t DCL_runDF13_C4(DCL_DF13 *p, float32_t ek)
 //! \param[in] vk   The partial pre-computed control effort
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF13_C5(DCL_DF13 *p, float32_t ek, float32_t vk)
 {
     p->d4 = (ek * p->b0) + vk;
@@ -1226,6 +1274,9 @@ static inline float32_t DCL_runDF13_C5(DCL_DF13 *p, float32_t ek, float32_t vk)
 //! \param[in] uk   The controller output in the previous sample interval
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF13_C6(DCL_DF13 *p, float32_t ek, float32_t uk)
 {
     float32_t v9;
@@ -1241,11 +1292,12 @@ static inline float32_t DCL_runDF13_C6(DCL_DF13 *p, float32_t ek, float32_t uk)
 
 
 //--- Direct Form 2 - 2nd order ----------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updateDF22,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF22_C4,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF22_C5,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF22_C6,"dclfuncs")
+#endif // __cplusplus
 
 //! \brief          Defines the DCL_DF22 shadow parameter set
 //!
@@ -1295,6 +1347,9 @@ static inline void DCL_resetDF22(DCL_DF22 *p)
 //! \param[in] p    Pointer to the DCL_DF22 controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updateDF22(DCL_DF22 *p)
 {
     uint16_t v;
@@ -1327,7 +1382,7 @@ static inline bool DCL_isStableDF22(DCL_DF22 *p)
 {
     return(DCL_isStablePn2(1.0f, p->sps->a1, p->sps->a2));
 }
-
+#ifndef __cplusplus
 //! \brief          Loads the DF22 shadow coefficients from a ZPK3 description
 //!                 Note: new settings take effect after DCL_updateDF22()
 //!                 Only z1, z2, p1 & p2 considered: z3 & p3 ignored
@@ -1361,7 +1416,7 @@ static inline void DCL_loadDF22asZPK(DCL_DF22 *p, DCL_ZPK3 *q)
     p->sps->a1 = (-8.0f + (2.0f * alpha0 * T * T)) / a0p;
     p->sps->a2 = (4.0f - (alpha1 * 2.0f * T) + (alpha0 * T * T)) / a0p;
 }
-
+#endif // __cplusplus
 //! \brief          Loads the DF22 shadow coefficients from damping ratio and un-damped
 //!                 natural frequency using sample rate in CSS.
 //!                 Note: new settings take effect after DCL_updateDF22()
@@ -1495,6 +1550,9 @@ extern void DCL_runDF22_C3(DCL_DF22 *p, float32_t ek, float32_t uk);
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF22_C4(DCL_DF22 *p, float32_t ek)
 {
     float32_t v7;
@@ -1512,6 +1570,9 @@ static inline float32_t DCL_runDF22_C4(DCL_DF22 *p, float32_t ek)
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF22_C5(DCL_DF22 *p, float32_t ek)
 {
     return((ek * p->b0) + p->x1);
@@ -1523,6 +1584,9 @@ static inline float32_t DCL_runDF22_C5(DCL_DF22 *p, float32_t ek)
 //! \param[in] ek   The servo error
 //! \param[in] uk   The controller output in the previous sample interval
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_runDF22_C6(DCL_DF22 *p, float32_t ek, float32_t uk)
 {
     p->x1 = (ek * p->b1) + p->x2 - (uk * p->a1);
@@ -1531,12 +1595,12 @@ static inline void DCL_runDF22_C6(DCL_DF22 *p, float32_t ek, float32_t uk)
 
 
 //--- Direct Form 2 - 3rd order ----------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updateDF23,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF23_C4,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF23_C5,"dclfuncs")
 #pragma CODE_SECTION(DCL_runDF23_C6,"dclfuncs")
-
+#endif // __cplusplus
 //! \brief          Defines the DCL_DF23 shadow parameter set
 //!
 typedef struct dcl_df23_sps {
@@ -1594,6 +1658,9 @@ static inline void DCL_resetDF23(DCL_DF23 *p)
 //! \param[in] p    Pointer to the DCL_DF23 controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updateDF23(DCL_DF23 *p)
 {
     uint16_t v;
@@ -1628,7 +1695,7 @@ static inline bool DCL_isStableDF23(DCL_DF23 *p)
 {
     return(DCL_isStablePn3(1.0f, p->sps->a1, p->sps->a2, p->sps->a3));
 }
-
+#ifndef __cplusplus
 //! \brief          Loads the DF23 shadow coefficients from a ZPK3 description
 //!                 Note: new settings take effect after DCL_updateDF23()
 //! \param[in] p    Pointer to the DCL_DF23 controller structure
@@ -1667,7 +1734,7 @@ static inline void DCL_loadDF23asZPK(DCL_DF23 *p, DCL_ZPK3 *q)
     p->sps->a2 = (24.0f - (alpha2 * 4.0f * T) - (alpha1 * 2.0f * T * T) + (3.0f * alpha0 * T * T * T)) / a0p;
     p->sps->a3 = (-8.0f + (alpha2 * 4.0f * T) - (alpha1 * 2.0f * T * T) + (alpha0 * T * T * T)) / a0p;
 }
-
+#endif // __cplusplus
 //! \brief          Executes a full 3rd order Direct Form 2 controller on the FPU32
 //!                 Implemented as an external assembly module
 //! \param[in] p    Pointer to the DCL_DF23 controller structure
@@ -1698,6 +1765,9 @@ extern void DCL_runDF23_C3(DCL_DF23 *p, float32_t ek, float32_t uk);
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF23_C4(DCL_DF23 *p, float32_t ek)
 {
     float32_t v7;
@@ -1716,6 +1786,9 @@ static inline float32_t DCL_runDF23_C4(DCL_DF23 *p, float32_t ek)
 //! \param[in] ek   The servo error
 //! \return         The control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runDF23_C5(DCL_DF23 *p, float32_t ek)
 {
     return((ek * p->b0) + p->x1);
@@ -1727,6 +1800,9 @@ static inline float32_t DCL_runDF23_C5(DCL_DF23 *p, float32_t ek)
 //! \param[in] ek   The servo error
 //! \param[in] uk   The controller output in the previous sample interval
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_runDF23_C6(DCL_DF23 *p, float32_t ek, float32_t uk)
 {
     p->x1 = (ek * p->b1) + p->x2 - (uk * p->a1);
@@ -1779,9 +1855,10 @@ static inline int16_t DCL_runClamp_C2(float32_t *data, float32_t Umax, float32_t
 }
 
 //--- Gain Scheduler Module --------------------------------------------------
-
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_updateGSM,"dclfuncs")
 #pragma CODE_SECTION(DCL_runGSM_C1,"dclfuncs")
+#endif // __cplusplus
 
 //! \brief          Number of piecewise linear sections
 //!
@@ -1837,6 +1914,9 @@ static inline void DCL_resetGSM(DCL_GSM *p)
 //! \param[in] p    Pointer to the active DCL_GSM controller structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_updateGSM(DCL_GSM *p)
 {
     uint16_t j, v;
@@ -1898,6 +1978,9 @@ static inline void DCL_loadGSMoffsets(DCL_GSM *p)
 //! \param[in] x    Input
 //! \return         Control effort
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_runGSM_C1(DCL_GSM *p, float32_t x)
 {
     int16_t sector;

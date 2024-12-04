@@ -59,10 +59,12 @@ extern "C" {
 
 //! \brief          Region related symbols for function placement
 //
+#ifndef __cplusplus
 #pragma CODE_SECTION(DCL_runRefgen,"dclfuncs")
 #pragma CODE_SECTION(DCL_getRefgenPhaseA,"dclfuncs")
 #pragma CODE_SECTION(DCL_getRefgenPhaseB,"dclfuncs")
 #pragma CODE_SECTION(DCL_getRefgenPhaseC,"dclfuncs")
+#endif // __cplusplus
 
 //! \brief          Defines the minimum normalized increment
 //!
@@ -326,6 +328,9 @@ static inline void DCL_setRefgenMode(DCL_REFGEN *p, int16_t mode)
 //! \param[in] p    Pointer to the DCL_REFGEN structure
 //! \return         None
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline void DCL_runRefgen(DCL_REFGEN *p)
 {
 #ifdef DCL_ERROR_HANDLING_ENABLED
@@ -528,6 +533,9 @@ static inline void DCL_runRefgen(DCL_REFGEN *p)
 //! \param[in] p    Pointer to the active DCL_REFGEN structure
 //! \return         The phase A reference output
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_getRefgenPhaseA(DCL_REFGEN *p)
 {
     return(p->ya);
@@ -538,6 +546,9 @@ static inline float32_t DCL_getRefgenPhaseA(DCL_REFGEN *p)
 //! \param[in] p    Pointer to the active DCL_REFGEN structure
 //! \return         The phase B reference output
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_getRefgenPhaseB(DCL_REFGEN *p)
 {
     return(p->yb);
@@ -548,6 +559,9 @@ static inline float32_t DCL_getRefgenPhaseB(DCL_REFGEN *p)
 //! \param[in] p    Pointer to the active DCL_REFGEN structure
 //! \return         The phase C reference output
 //!
+#ifdef __cplusplus
+#pragma CODE_SECTION("dclfuncs")
+#endif // __cplusplus
 static inline float32_t DCL_getRefgenPhaseC(DCL_REFGEN *p)
 {
     return(p->yc);

@@ -75,8 +75,9 @@ typedef long double float64_t;
 #endif      // C2000_IEEE754_TYPES
 
 #ifndef __TMS320C28XX_CLA__
-
+#ifndef __cplusplus
 #include <complex.h>
+#endif
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -383,6 +384,7 @@ static inline bool DCL_isStablePn3(float32_t a0, float32_t a1, float32_t a2, flo
 //!                 three complex zeros, three complex poles, and a real gain.
 //!                 All frequencies must be specified in radians/sec.
 //!
+#ifndef __cplusplus
 typedef struct dcl_zpk3 {
     float complex z1;
     float complex z2;
@@ -407,7 +409,7 @@ static inline bool DCL_isStableZpk3(DCL_ZPK3 *q)
 {
     return(((cabsf(q->p1) < 1.0f) && (cabsf(q->p2) < 1.0f) && (cabsf(q->p3) < 1.0f)) ? true : false);
 }
-
+#endif // __cplusplus
 
 //----------------------------------------------------------------------------
 
